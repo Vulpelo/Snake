@@ -16,7 +16,12 @@ namespace Snake
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new Form1());
+
+            Model model = new Snake.Model();
+            Form1 view = new Form1(model);
+            Controler controler = new Snake.Controler(view, model);
+
+            Application.Run(view);
         }
     }
 }
