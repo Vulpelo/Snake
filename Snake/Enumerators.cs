@@ -13,10 +13,4 @@ namespace Snake
         Right,
         Down
     }
-
-    interface IModel
-    {
-        void setDirection(Direction direction);
-
-    }
 }

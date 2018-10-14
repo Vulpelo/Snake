@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Snake
 {
-    class GameMap
+    abstract class Item
     {
     }
 }
