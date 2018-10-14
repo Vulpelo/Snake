@@ -16,12 +16,12 @@ namespace Snake
 
     public struct Position
     {
-        int x;
-        int y;
+        public int X { get; set; }
+        public int Y { get; set; }
         public Position(int nx, int ny)
         {
-            x = nx;
-            y = ny;
+            X = nx;
+            Y = ny;
         }
     }
     public class Place
@@ -31,7 +31,7 @@ namespace Snake
         /// </summary>
         public bool Obstacle { get; set; }
         public PlaceHas Has { get; set; }
-        public Position Coordinates { get; }
+        public Position Coordinates { get; set; }
         public Place()
         {
             Position pos = new Position(1,1);

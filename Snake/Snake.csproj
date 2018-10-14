@@ -59,6 +59,7 @@
     <Compile Include="IView.cs" />
     <Compile Include="Model.cs" />
     <Compile Include="Place.cs" />
+    <Compile Include="PlayerSnake.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Form1.resx">

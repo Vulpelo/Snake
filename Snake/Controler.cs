@@ -15,14 +15,44 @@ namespace Snake
         private Model Mod { get; set; }
         int pos = 0;
         int lastPos = 0;
+
+        Controler()
+        {
+            View.update();
+        }
+
         void TimerEventProcessor(Object obj, EventArgs args)
         {
-            lastPos = pos;
-            pos++;
-            if (pos >= Mod.PlayRows)
-                pos = 0;
-            Mod.gameMap[1, lastPos].Has = PlaceHas.None;
-            Mod.gameMap[1, pos].Has = PlaceHas.Apple;
+            for(int i = Mod.TheSnake.Segments.Count - 1; i > 0; i--)
+            {
+                Mod.TheSnake.Segments[i].Coordinates = Mod.TheSnake.Segments[i - 1].Coordinates;
+            }
+
+            Position pos = Mod.TheSnake.Segments[0].Coordinates;
+            switch (Mod.TheSnake.movementDirection)
+            {
+                case Direction.Down:
+                    pos.Y++;
+                    break;
+                case Direction.Left:
+                    pos.X--;
+                    break;
+                case Direction.Right:
+                    pos.X++;
+                    break;
+                case Direction.Up:
+                    pos.Y--;
+                    break;
+            }
+            Mod.TheSnake.Segments[0].Coordinates = pos;
+
+
+            //lastPos = pos;
+            //pos++;
+            //if (pos >= Mod.PlayRows)
+            //    pos = 0;
+            //Mod.gameMap[1, lastPos].Has = PlaceHas.None;
+            //Mod.gameMap[1, pos].Has = PlaceHas.Apple;
             View.update();
         }
 
@@ -37,6 +67,8 @@ namespace Snake
             // Sets the timer interval to 0.5 seconds.
             myTimer.Interval = 500;
             myTimer.Start();
+
+            View.update();
         }
 
         public void startGame()

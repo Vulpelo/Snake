@@ -26,25 +26,30 @@ namespace Snake
 
         public Form1()
         {
+            this.KeyPreview = true;
+            this.KeyPress += new KeyPressEventHandler(Form1_KeyPress);
             InitializeComponent();
         }
         public Form1(Model nModel)
         {
+            this.KeyPreview = true;
+            this.KeyPress += new KeyPressEventHandler(Form1_KeyPress);
+
             Mod = nModel;
             
             InitializeComponent();
 
 
             tLP = new TableLayoutPanel();
+            
+            tLP.ColumnCount = Mod.PlayColumns;
+            tLP.RowCount = Mod.PlayRows;
 
-            tLP.ColumnCount = playColumns;
-            tLP.RowCount = playRows;
+            gamamap = new PictureBox[playRows, playColumns];
 
-            gamamap = new PictureBox[playColumns, playRows];
-
-            for (int i = 0; i < playColumns; i++)
+            for (int i = 0; i < playRows; i++)
             {
-                for (int j = 0; j < playRows; j++)
+                for (int j = 0; j < playColumns; j++)
                 {
                     gamamap[i, j] = new PictureBox();
                     gamamap[i, j].Height = 20;
@@ -63,7 +68,10 @@ namespace Snake
             flowLayoutPanel1.Controls.Add(tLP);
         }
 
-        
+        void Form1_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            Mod.changeDirection(e.KeyChar);
+        }
 
         private void Form1_Load(object sender, EventArgs e)
         {
@@ -82,11 +90,10 @@ namespace Snake
 
         void IView.update()
         {
-            for (int i = 0; i < playColumns; i++)
+            for (int i = 0; i < playRows; i++)
             {
-                for(int j=0; j< playRows; j++)
+                for(int j=0; j < playColumns; j++)
                 {
-
                     switch(Mod.gameMap[i, j].Has)
                     {
                         case PlaceHas.None:
@@ -99,6 +106,12 @@ namespace Snake
 
                 }
             }
+
+            if(Mod.TheSnake.Segments.Count > 0)
+                foreach(Place p in Mod.TheSnake.Segments)
+                {
+                    gamamap[p.Coordinates.Y ,p.Coordinates.X].BackColor = Color.Black;
+                }
 
         }
     }
