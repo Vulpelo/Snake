@@ -24,8 +24,14 @@ namespace Snake
 
         void TimerEventProcessor(Object obj, EventArgs args)
         {
-            updateSnakePosition();
-            checkEatingApple();
+            editingDirection();
+
+            if (!isSnakeColliding())
+            {
+                updateSnakePosition();
+                checkEatingApple();
+            }
+            
 
             View.update();
         }
@@ -35,8 +41,44 @@ namespace Snake
             Mod.TheApple.place.Coordinates = randomAvaliablePosition();
         }
 
+        private bool isSnakeColliding()
+            // true if snake will be colliding when position gonna be updated
+        {
+            Position head = Mod.TheSnake.Segments[0].Coordinates;
+            head = changePosDependingOnDir(head, Mod.TheSnake.movementDirection);
+
+            // if out of bounds
+            if (head.X >= Mod.PlayColumns || head.Y >= Mod.PlayRows || head.X < 0 || head.X < 0)
+            {
+                return true;
+            }
+            else
+            {
+                for(int i=2; i<Mod.TheSnake.Segments.Count-1; i++)
+                {
+                    if (head.Equals( Mod.TheSnake.Segments[i].Coordinates ))
+                    {
+                        return true;
+                    }
+                }
+            }
+            return false;
+        }
+
+        private void editingDirection()
+        {
+            if ((Mod.TheSnake.movementDirection == Direction.Up && Mod.TheSnake.lastMovementDirection == Direction.Down)
+                || (Mod.TheSnake.movementDirection == Direction.Left && Mod.TheSnake.lastMovementDirection == Direction.Right)
+                || (Mod.TheSnake.lastMovementDirection == Direction.Up && Mod.TheSnake.movementDirection == Direction.Down)
+                || (Mod.TheSnake.lastMovementDirection == Direction.Left && Mod.TheSnake.movementDirection == Direction.Right))
+            {
+                Mod.TheSnake.movementDirection = Mod.TheSnake.lastMovementDirection;
+            }
+        }
+        
         private Position randomAvaliablePosition()
         {
+            // TODO: Rand position needs to be checked, and case in with all places are occupied
             int size = Mod.PlayColumns * Mod.PlayRows - Mod.TheSnake.Segments.Count;
 
             Random rand = new Random();
@@ -80,15 +122,9 @@ namespace Snake
 
         }
 
-        private void updateSnakePosition()
+        private Position changePosDependingOnDir(Position pos, Direction dir)
         {
-            for (int i = Mod.TheSnake.Segments.Count - 1; i > 0; i--)
-            {
-                Mod.TheSnake.Segments[i].Coordinates = Mod.TheSnake.Segments[i - 1].Coordinates;
-            }
-
-            Position pos = Mod.TheSnake.Segments[0].Coordinates;
-            switch (Mod.TheSnake.movementDirection)
+            switch (dir)
             {
                 case Direction.Down:
                     pos.Y++;
@@ -103,7 +139,22 @@ namespace Snake
                     pos.Y--;
                     break;
             }
-            Mod.TheSnake.Segments[0].Coordinates = pos;
+            return pos;
+        }
+
+        private void updateSnakePosition()
+        {
+            Mod.TheSnake.updateLastMovementDirection();
+            for (int i = Mod.TheSnake.Segments.Count - 1; i > 0; i--)
+            {
+                Mod.TheSnake.Segments[i].Coordinates = Mod.TheSnake.Segments[i - 1].Coordinates;
+            }
+            
+
+            Mod.TheSnake.Segments[0].Coordinates = 
+                changePosDependingOnDir(Mod.TheSnake.Segments[0].Coordinates,
+                Mod.TheSnake.movementDirection);
+
         }
 
         public Controler(IView nView, Model nModel)

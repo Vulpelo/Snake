@@ -96,6 +96,7 @@ namespace Snake
                     {
                         case PlaceHas.None:
                             gamamap[i, j].BackColor = Color.LightGray;
+                            Color.FromArgb(255,255,255);
                             break;
                         case PlaceHas.Apple:
                             gamamap[i, j].BackColor = Color.DarkGray;
@@ -108,8 +109,16 @@ namespace Snake
             gamamap[Mod.TheApple.place.Coordinates.Y, Mod.TheApple.place.Coordinates.X].BackColor = Color.Black;
 
             if (Mod.TheSnake.Segments.Count > 0)
-                foreach(Place p in Mod.TheSnake.Segments)
-                    gamamap[p.Coordinates.Y ,p.Coordinates.X].BackColor = Color.DarkGray;
+            {
+                int color = 50;
+                int maxColor = 180;
+                foreach (Place p in Mod.TheSnake.Segments)
+                {
+                    if (color < maxColor)
+                        color+=10;
+                    gamamap[p.Coordinates.Y, p.Coordinates.X].BackColor = Color.FromArgb(color, color, color);
+                }
+            }
         }
     }
 }
