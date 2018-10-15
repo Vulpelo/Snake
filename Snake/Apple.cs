@@ -6,7 +6,10 @@ using System.Threading.Tasks;
 
 namespace Snake
 {
-    class Apple : Item
+    public class Apple : Item
     {
+
+        public Apple() : base() { }
+
     }
 }

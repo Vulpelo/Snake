@@ -9,16 +9,16 @@ namespace Snake
     public class Model
     {
         public PlayerSnake TheSnake { get; set; }
-        public int PlayRows { get; set; }
-        public int PlayColumns { get; set; }
+        public int PlayRows { get; set; } = 10;
+        public int PlayColumns { get; set; } = 10;
         public Place[,] gameMap;
+        public Apple TheApple { get; set; }
 
 
         public Model()
         {
             TheSnake = new PlayerSnake(3);
-            PlayRows = 10;
-            PlayColumns = 10;
+            TheApple = new Apple();
             gameMap = new Place[PlayRows, PlayColumns];
             for(int i=0; i< PlayColumns; i++)
             {

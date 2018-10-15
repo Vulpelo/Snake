@@ -22,8 +22,6 @@ namespace Snake
         TableLayoutPanel tLP;
         PictureBox[,] gamamap;
 
-
-
         public Form1()
         {
             this.KeyPreview = true;
@@ -107,12 +105,11 @@ namespace Snake
                 }
             }
 
-            if(Mod.TheSnake.Segments.Count > 0)
-                foreach(Place p in Mod.TheSnake.Segments)
-                {
-                    gamamap[p.Coordinates.Y ,p.Coordinates.X].BackColor = Color.Black;
-                }
+            gamamap[Mod.TheApple.place.Coordinates.Y, Mod.TheApple.place.Coordinates.X].BackColor = Color.Black;
 
+            if (Mod.TheSnake.Segments.Count > 0)
+                foreach(Place p in Mod.TheSnake.Segments)
+                    gamamap[p.Coordinates.Y ,p.Coordinates.X].BackColor = Color.DarkGray;
         }
     }
 }

@@ -13,4 +13,11 @@ namespace Snake
         Right,
         Down
     }
+    public enum PlaceHas
+    {
+        None,
+        Obstacle,
+        Apple,
+        Snake
+    }
 }

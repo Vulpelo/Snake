@@ -6,14 +6,6 @@ using System.Threading.Tasks;
 
 namespace Snake
 {
-    public enum PlaceHas
-    {
-        None,
-        Obstacle,
-        Apple,
-        Snake
-    }
-
     public struct Position
     {
         public int X { get; set; }
