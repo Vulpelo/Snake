@@ -27,5 +27,10 @@ namespace Snake
             lastMovementDirection = movementDirection;
         }
 
+        ~PlayerSnake()
+        {
+            Segments.Clear();
+        }
+
     }
 }

@@ -20,4 +20,10 @@ namespace Snake
         Apple,
         Snake
     }
+    public enum GameState
+    {
+        MainMenu,
+        Play,
+        EndGame
+    }
 }

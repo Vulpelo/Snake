@@ -9,5 +9,7 @@ namespace Snake
     interface IView
     {
         void update();
+        void setGameState(GameState nState);
     }
+    
 }

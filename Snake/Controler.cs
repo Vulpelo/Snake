@@ -10,7 +10,7 @@ namespace Snake
     class Controler : IControler
     {
         Timer myTimer = new Timer();
-
+        bool playing = false;
         private IView View { get; set; }
         private Model Mod { get; set; }
         int pos = 0;
@@ -24,13 +24,27 @@ namespace Snake
 
         void TimerEventProcessor(Object obj, EventArgs args)
         {
-            editingDirection();
-
-            if (!isSnakeColliding())
+            if (playing)
             {
-                updateSnakePosition();
-                checkEatingApple();
+                editingDirection();
+
+                if (!isSnakeColliding())
+                {
+                    updateSnakePosition();
+                    checkEatingApple();
+                }
+                else
+                {
+                    View.setGameState(GameState.EndGame);
+                    playing = false;
+                }
             }
+            else if(Mod.StartButtonClicked)
+            {
+                playing = true;
+                Mod.defaultValues();
+            }
+
             
 
             View.update();
@@ -48,7 +62,7 @@ namespace Snake
             head = changePosDependingOnDir(head, Mod.TheSnake.movementDirection);
 
             // if out of bounds
-            if (head.X >= Mod.PlayColumns || head.Y >= Mod.PlayRows || head.X < 0 || head.X < 0)
+            if (head.X >= Mod.PlayColumns || head.Y >= Mod.PlayRows || head.X < 0 || head.Y < 0)
             {
                 return true;
             }
@@ -116,6 +130,7 @@ namespace Snake
                 // create new segment and add it to snake. Segment position is equal to last one
                 Mod.TheSnake.Segments.Add(new Place(Mod.TheSnake.Segments[Mod.TheSnake.Segments.Count-1].Coordinates));
 
+                Mod.applesEaten++;
                 // set new position of apple
                 spawnApple();
             }

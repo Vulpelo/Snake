@@ -8,25 +8,35 @@ namespace Snake
 {
     public class Model
     {
+        public int applesEaten { get; set; }
         public PlayerSnake TheSnake { get; set; }
         public int PlayRows { get; set; } = 10;
         public int PlayColumns { get; set; } = 10;
         public Place[,] gameMap;
         public Apple TheApple { get; set; }
-
+        public bool StartButtonClicked { get; set; } = false;
 
         public Model()
         {
+            defaultValues();
+        }
+
+        public void defaultValues()
+        {
+
             TheSnake = new PlayerSnake(3);
             TheApple = new Apple();
+            
             gameMap = new Place[PlayRows, PlayColumns];
-            for(int i=0; i< PlayColumns; i++)
+            for (int i = 0; i < PlayColumns; i++)
             {
-                for(int j=0; j< PlayRows; j++)
+                for (int j = 0; j < PlayRows; j++)
                 {
                     gameMap[i, j] = new Place(new Position(i, j));
                 }
             }
+            StartButtonClicked = false;
+            applesEaten = 0;
         }
 
         public void changeDirection(char key)
