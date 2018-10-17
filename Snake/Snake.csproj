@@ -56,7 +56,6 @@
     </Compile>
     <Compile Include="IControler.cs" />
     <Compile Include="Enumerators.cs" />
-    <Compile Include="Item.cs" />
     <Compile Include="IView.cs" />
     <Compile Include="Model.cs" />
     <Compile Include="Place.cs" />

@@ -26,6 +26,7 @@ namespace Snake
         {
             if (playing)
             {
+                string a;
                 editingDirection();
 
                 if (!isSnakeColliding())
@@ -93,32 +94,39 @@ namespace Snake
         private Position randomAvaliablePosition()
         {
             // TODO: Rand position needs to be checked, and case in with all places are occupied
+
+            // all avaliable places
             int size = Mod.PlayColumns * Mod.PlayRows - Mod.TheSnake.Segments.Count;
 
             Random rand = new Random();
             int randPosNumber = rand.Next(0, size);
 
             int i = 0;
-            int chosenPos = 0;
-            // przejscie przez cala tablice
-            for(i=0; i <= size-1; i++)
+            int actualChosenPos = 0;
+
+            // sprawdz wszystkie pola po kolei
+            for(i=0; i < Mod.PlayColumns * Mod.PlayRows; i++)
             {
+                bool found = false;
                 foreach(Place p in Mod.TheSnake.Segments)
                 {
-                    int tmp = p.Coordinates.Y * p.Coordinates.X + p.Coordinates.X;
+                    int tmp = p.Coordinates.Y * Mod.PlayColumns + p.Coordinates.X;
                     // if position is not empty skip rest of loop body
                     if (tmp == i)
                     {
-                        i++;
-                        continue;
+                        found = true;
+                        break;
                     }
                 }
-                if(chosenPos == randPosNumber)
+                if (found)
+                    continue;
+                if(actualChosenPos == randPosNumber)
                 {
                     break;
                 }
-                chosenPos++;
+                actualChosenPos++;
             }
+            Console.WriteLine("X:" + Mod.TheSnake.Segments[0].Coordinates.X + "Y:" + Mod.TheSnake.Segments[0].Coordinates.Y);
             return new Position(i % Mod.PlayColumns, i / Mod.PlayColumns);
         }
 

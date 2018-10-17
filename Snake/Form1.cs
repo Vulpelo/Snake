@@ -94,7 +94,6 @@ namespace Snake
                 }
             }
 
-            gamamap[Mod.TheApple.place.Coordinates.Y, Mod.TheApple.place.Coordinates.X].BackColor = Color.Black;
 
             if (Mod.TheSnake.Segments.Count > 0)
             {
@@ -107,6 +106,7 @@ namespace Snake
                     gamamap[p.Coordinates.Y, p.Coordinates.X].BackColor = Color.FromArgb(color, color, color);
                 }
             }
+            gamamap[Mod.TheApple.place.Coordinates.Y, Mod.TheApple.place.Coordinates.X].BackColor = Color.Black;
         }
 
         void Form1_KeyPress(object sender, KeyPressEventArgs e)

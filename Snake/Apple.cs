@@ -6,10 +6,16 @@ using System.Threading.Tasks;
 
 namespace Snake
 {
-    public class Apple : Item
+    public class Apple
     {
+        public Place place { get; set; }
 
-        public Apple() : base() { }
-
+        public Apple()
+        {
+            place = new Place();
+            place.Coordinates = new Position(0, 0);
+            place.Has = PlaceHas.Apple;
+            place.Obstacle = false;
+        }
     }
 }
