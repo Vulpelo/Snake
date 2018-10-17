@@ -93,8 +93,6 @@ namespace Snake
         
         private Position randomAvaliablePosition()
         {
-            // TODO: Rand position needs to be checked, and case in with all places are occupied
-
             // all avaliable places
             int size = Mod.PlayColumns * Mod.PlayRows - Mod.TheSnake.Segments.Count;
 

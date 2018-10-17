@@ -1,15 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Collections;
 
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-
 
 namespace Snake
 {
@@ -41,7 +33,6 @@ namespace Snake
 
             mainMenuStateBegin();
             //playStateBegin();
-
         }
 
         void playStateBegin()
@@ -76,33 +67,22 @@ namespace Snake
 
         void playState()
         {
-            for (int i = 0; i < playRows; i++)
-            {
-                for (int j = 0; j < playColumns; j++)
-                {
-                    switch (Mod.gameMap[i, j].Has)
-                    {
-                        case PlaceHas.None:
-                            gamamap[i, j].BackColor = Color.LightGray;
-                            Color.FromArgb(255, 255, 255);
-                            break;
-                        case PlaceHas.Apple:
-                            gamamap[i, j].BackColor = Color.DarkGray;
-                            break;
-                    }
-
+            for (int i = 0; i < playRows; i++) {
+                for (int j = 0; j < playColumns; j++) {
+                    gamamap[i, j].BackColor = Color.LightGray;
                 }
             }
 
-
-            if (Mod.TheSnake.Segments.Count > 0)
+            int sLength = Mod.TheSnake.Segments.Count;
+            if (sLength > 0)
             {
                 int color = 50;
                 int maxColor = 180;
-                foreach (Place p in Mod.TheSnake.Segments)
+                for (int i=0; i<sLength; i++)
                 {
-                    if (color < maxColor)
-                        color += 10;
+                    Place p = Mod.TheSnake.Segments[i];
+                    if(i < 7 || i > sLength - 7)
+                        color += 11;
                     gamamap[p.Coordinates.Y, p.Coordinates.X].BackColor = Color.FromArgb(color, color, color);
                 }
             }
