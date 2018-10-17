@@ -1,5 +1,4 @@
 ﻿using System;
-
 using System.Drawing;
 using System.Windows.Forms;
 
@@ -32,7 +31,42 @@ namespace Snake
             InitializeComponent();
 
             mainMenuStateBegin();
-            //playStateBegin();
+        }
+        
+        void Form1_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            Mod.changeDirection(e.KeyChar);
+        }
+
+        private void Form1_Load(object sender, EventArgs e)
+        {
+
+        }
+
+        private void flowLayoutPanel1_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
+
+        void IView.update()
+        {
+            switch (state)
+            {
+                case GameState.Play:
+                    playState();
+                    break;
+            }
+
+        }
+        
+        void mainMenuStateBegin()
+        {
+            //startButton.
+            startButton = new Button();
+            startButton.AutoSize = true;
+            startButton.Text = "Start Game";
+            startButton.Click += new System.EventHandler(this.startButtonClicked);
+            flowLayoutPanel1.Controls.Add(startButton);
         }
 
         void playStateBegin()
@@ -67,73 +101,51 @@ namespace Snake
 
         void playState()
         {
-            for (int i = 0; i < playRows; i++) {
-                for (int j = 0; j < playColumns; j++) {
+            for (int i = 0; i < playRows; i++)
+            {
+                for (int j = 0; j < playColumns; j++)
+                {
                     gamamap[i, j].BackColor = Color.LightGray;
                 }
             }
 
+            // Drawing snake
             int sLength = Mod.TheSnake.Segments.Count;
             if (sLength > 0)
             {
                 int color = 50;
-                int maxColor = 180;
-                for (int i=0; i<sLength; i++)
+                for (int i = 0; i < sLength; i++)
                 {
                     Place p = Mod.TheSnake.Segments[i];
-                    if(i < 7 || i > sLength - 7)
-                        color += 11;
+                    if (i < 7 || i > sLength - 7)
+                        color += 10;
                     gamamap[p.Coordinates.Y, p.Coordinates.X].BackColor = Color.FromArgb(color, color, color);
                 }
             }
+
+            // Drawing apple
             gamamap[Mod.TheApple.place.Coordinates.Y, Mod.TheApple.place.Coordinates.X].BackColor = Color.Black;
         }
 
-        void Form1_KeyPress(object sender, KeyPressEventArgs e)
+        void playStateEnd()
         {
-            Mod.changeDirection(e.KeyChar);
-        }
-
-        private void Form1_Load(object sender, EventArgs e)
-        {
-
-        }
-
-        private void flowLayoutPanel1_Paint(object sender, PaintEventArgs e)
-        {
-
-        }
-
-        void IView.update()
-        {
-            switch (state)
-            {
-                case GameState.Play:
-                    playState();
-                    break;
+            // deleting map
+            for (int i = 0; i < playRows; i++) {
+                for (int j = 0; j < playColumns; j++) {
+                    gamamap[i, j] = null;
+                }
             }
-
+            flowLayoutPanel1.Controls.Remove(tLP);
+            tLP = null;
         }
 
         void endGameStateBegin()
         {
-            // deleting map
-            flowLayoutPanel1.Controls.Remove(tLP);
 
             //startButton.
             startButton = new Button();
             startButton.AutoSize = true;
             startButton.Text = Mod.applesEaten + " apples eaten.\nRetry?";
-            startButton.Click += new System.EventHandler(this.startButtonClicked);
-            flowLayoutPanel1.Controls.Add(startButton);
-        }
-
-        void mainMenuStateBegin()
-        {
-            //startButton.
-            startButton = new Button();
-            startButton.AutoSize = true;
-            startButton.Text = "Start Game";
             startButton.Click += new System.EventHandler(this.startButtonClicked);
             flowLayoutPanel1.Controls.Add(startButton);
         }
@@ -150,12 +162,27 @@ namespace Snake
 
         public void setGameState(GameState nState)
         {
+            endState();
             state = nState;
             switch (state)
             {
                 case GameState.EndGame:
                     endGameStateBegin();
                     break;
+            }
+        }
+        private void endState()
+        {
+            switch(state)
+            {
+                case GameState.MainMenu:
+                    break;
+                case GameState.Play:
+                    playStateEnd();
+                    break;
+                case GameState.EndGame:
+                    break;
+                    
             }
         }
     }

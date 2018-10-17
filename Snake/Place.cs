@@ -22,7 +22,6 @@ namespace Snake
         /// If place is an obstacle, its game over if snake touch it
         /// </summary>
         public bool Obstacle { get; set; }
-        public PlaceHas Has { get; set; }
         public Position Coordinates { get; set; }
         public Place()
         {
@@ -30,14 +29,12 @@ namespace Snake
 
             this.Coordinates = new Position(0,0);
             Obstacle = false;
-            Has = PlaceHas.None;
 
         }
         public Place(Position npos)
         {
             this.Coordinates = npos;
             Obstacle = false;
-            Has = PlaceHas.None;
         }
     }
 }

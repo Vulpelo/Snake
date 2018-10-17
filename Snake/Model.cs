@@ -23,7 +23,6 @@ namespace Snake
 
         public void defaultValues()
         {
-
             TheSnake = new PlayerSnake(3);
             TheApple = new Apple();
             
