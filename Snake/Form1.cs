@@ -64,8 +64,12 @@ namespace Snake
             //startButton.
             startButton = new Button();
             startButton.AutoSize = true;
+            startButton.Anchor = AnchorStyles.Top;
             startButton.Text = "Start Game";
             startButton.Click += new System.EventHandler(this.startButtonClicked);
+
+            startButton.Left = (this.flowLayoutPanel1.Width - startButton.Width) / 2;
+            startButton.Top = (this.flowLayoutPanel1.Height - startButton.Height) / 2;
             flowLayoutPanel1.Controls.Add(startButton);
         }
 
@@ -93,38 +97,47 @@ namespace Snake
                     tLP.Controls.Add(gamamap[i, j]);
                 }
             }
-            tLP.Width = 400;
-            tLP.Height = 400;
+            tLP.AutoSize = true;
             tLP.AutoSizeMode = AutoSizeMode.GrowAndShrink;
             flowLayoutPanel1.Controls.Add(tLP);
         }
 
         void playState()
         {
-            for (int i = 0; i < playRows; i++)
-            {
-                for (int j = 0; j < playColumns; j++)
-                {
-                    gamamap[i, j].BackColor = Color.LightGray;
+            for (int i = 0; i < playRows; i++) {
+                for (int j = 0; j < playColumns; j++) {
+                    gamamap[i, j].BackColor = Color.FromArgb(225,225,225);
                 }
             }
 
-            // Drawing snake
+            drawSnake();
+
+            // Drawing apple
+            drawApple();
+        }
+        void drawSnake()
+        {
             int sLength = Mod.TheSnake.Segments.Count;
             if (sLength > 0)
             {
-                int color = 50;
-                for (int i = 0; i < sLength; i++)
-                {
-                    Place p = Mod.TheSnake.Segments[i];
-                    if (i < 7 || i > sLength - 7)
+                Place p = Mod.TheSnake.Segments[0];
+                // head
+                gamamap[p.Coordinates.Y, p.Coordinates.X].BackColor = Color.FromArgb(0, 0, 0);
+
+                int color = 30;
+                // rest of segments
+                for (int i = 1; i < sLength; i++) {
+                    p = Mod.TheSnake.Segments[i];
+                    if (i < 6 || i > sLength - 7) {
                         color += 10;
+                    }
                     gamamap[p.Coordinates.Y, p.Coordinates.X].BackColor = Color.FromArgb(color, color, color);
                 }
             }
-
-            // Drawing apple
-            gamamap[Mod.TheApple.place.Coordinates.Y, Mod.TheApple.place.Coordinates.X].BackColor = Color.Black;
+        }
+        void drawApple()
+        {
+            gamamap[Mod.TheApple.place.Coordinates.Y, Mod.TheApple.place.Coordinates.X].BackColor = Color.DarkRed;
         }
 
         void playStateEnd()

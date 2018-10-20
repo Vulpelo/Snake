@@ -7,6 +7,7 @@ namespace Snake
     {
         Timer myTimer = new Timer();
         bool playing = false;
+        Random rand = new Random();
         private IView View { get; set; }
         private Model Mod { get; set; }
         int pos = 0;
@@ -92,7 +93,10 @@ namespace Snake
             // all avaliable places
             int size = Mod.PlayColumns * Mod.PlayRows - Mod.TheSnake.Segments.Count;
 
-            Random rand = new Random();
+            if(size <= 0) {
+                return Mod.TheApple.place.Coordinates;
+            }
+
             int randPosNumber = rand.Next(0, size);
 
             int i = 0;
@@ -130,7 +134,6 @@ namespace Snake
             {
                 // create new segment and add it to snake. Segment position is equal to last one
                 Mod.TheSnake.Segments.Add(new Place(Mod.TheSnake.Segments[Mod.TheSnake.Segments.Count-1].Coordinates));
-
                 Mod.applesEaten++;
                 // set new position of apple
                 spawnApple();
