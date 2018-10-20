@@ -59,18 +59,22 @@ namespace Snake
 
         }
         
-        void mainMenuStateBegin()
+        void createStartButton(String text)
         {
-            //startButton.
             startButton = new Button();
             startButton.AutoSize = true;
             startButton.Anchor = AnchorStyles.Top;
-            startButton.Text = "Start Game";
+            startButton.Text = text;
             startButton.Click += new System.EventHandler(this.startButtonClicked);
 
-            startButton.Left = (this.flowLayoutPanel1.Width - startButton.Width) / 2;
-            startButton.Top = (this.flowLayoutPanel1.Height - startButton.Height) / 2;
-            flowLayoutPanel1.Controls.Add(startButton);
+            startButton.Left = (this.panel1.Width - startButton.Width) / 2;
+            startButton.Top = (this.panel1.Height - startButton.Height) / 2;
+            panel1.Controls.Add(startButton);
+        }
+
+        void mainMenuStateBegin()
+        {
+            createStartButton("StartGame");
         }
 
         void playStateBegin()
@@ -82,10 +86,8 @@ namespace Snake
 
             gamamap = new PictureBox[playRows, playColumns];
 
-            for (int i = 0; i < playRows; i++)
-            {
-                for (int j = 0; j < playColumns; j++)
-                {
+            for (int i = 0; i < playRows; i++) {
+                for (int j = 0; j < playColumns; j++) {
                     gamamap[i, j] = new PictureBox();
                     gamamap[i, j].Height = 20;
                     gamamap[i, j].Width = 20;
@@ -99,7 +101,7 @@ namespace Snake
             }
             tLP.AutoSize = true;
             tLP.AutoSizeMode = AutoSizeMode.GrowAndShrink;
-            flowLayoutPanel1.Controls.Add(tLP);
+            panel1.Controls.Add(tLP);
         }
 
         void playState()
@@ -109,10 +111,7 @@ namespace Snake
                     gamamap[i, j].BackColor = Color.FromArgb(225,225,225);
                 }
             }
-
             drawSnake();
-
-            // Drawing apple
             drawApple();
         }
         void drawSnake()
@@ -148,25 +147,19 @@ namespace Snake
                     gamamap[i, j] = null;
                 }
             }
-            flowLayoutPanel1.Controls.Remove(tLP);
+            panel1.Controls.Remove(tLP);
             tLP = null;
         }
 
         void endGameStateBegin()
         {
-
-            //startButton.
-            startButton = new Button();
-            startButton.AutoSize = true;
-            startButton.Text = Mod.applesEaten + " apples eaten.\nRetry?";
-            startButton.Click += new System.EventHandler(this.startButtonClicked);
-            flowLayoutPanel1.Controls.Add(startButton);
+            createStartButton(Mod.applesEaten + " apples eaten.\nRetry?");
         }
 
         void startButtonClicked(object sender, EventArgs e)
         {
             // delete button
-            flowLayoutPanel1.Controls.Remove(startButton);
+            panel1.Controls.Remove(startButton);
             Mod.StartButtonClicked = true;
 
             state = GameState.Play;
