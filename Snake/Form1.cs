@@ -9,6 +9,7 @@ namespace Snake
         public GameState state { get; set; } = GameState.MainMenu;
         private Model Mod { get; set; }
 
+        Label label;
         private int playRows = 10;
         private int playColumns = 10;
         TableLayoutPanel tLP;
@@ -68,13 +69,30 @@ namespace Snake
             startButton.Click += new System.EventHandler(this.startButtonClicked);
 
             startButton.Left = (this.panel1.Width - startButton.Width) / 2;
-            startButton.Top = (this.panel1.Height - startButton.Height) / 2;
+            startButton.Top = (this.panel1.Height - startButton.Height) * 2;
             panel1.Controls.Add(startButton);
         }
 
         void mainMenuStateBegin()
         {
+            label = new Label();
+            label.Text = "SNAKE";
+            label.Font = new Font("Arial", 18, FontStyle.Bold);
+            label.TextAlign = ContentAlignment.MiddleCenter;
+            label.Left = (this.panel1.Width - label.Width) / 2;
+            label.Top = (this.panel1.Height - label.Height) / 3;
+            panel1.Controls.Add(label);
+
             createStartButton("StartGame");
+        }
+
+        void mainMenuStateEnd()
+        {
+            // delete button
+            panel1.Controls.Remove(startButton);
+            Mod.StartButtonClicked = true;
+
+            panel1.Controls.Remove(label);
         }
 
         void playStateBegin()
@@ -153,17 +171,27 @@ namespace Snake
 
         void endGameStateBegin()
         {
-            createStartButton(Mod.applesEaten + " apples eaten.\nRetry?");
+            label = new Label();
+            label.Font = new Font("Arial", 10, FontStyle.Regular);
+            label.AutoSize = true;
+            label.Text = Mod.applesEaten + " apples eaten.";
+            panel1.Controls.Add(label);
+
+            createStartButton("Retry?");
         }
 
-        void startButtonClicked(object sender, EventArgs e)
+        void endGameStateEnd()
         {
             // delete button
             panel1.Controls.Remove(startButton);
             Mod.StartButtonClicked = true;
 
-            state = GameState.Play;
-            playStateBegin();
+            panel1.Controls.Remove(label);
+        }
+
+        void startButtonClicked(object sender, EventArgs e)
+        {
+            setGameState(GameState.Play);
         }
 
         public void setGameState(GameState nState)
@@ -172,6 +200,9 @@ namespace Snake
             state = nState;
             switch (state)
             {
+                case GameState.Play:
+                    playStateBegin();
+                    break;
                 case GameState.EndGame:
                     endGameStateBegin();
                     break;
@@ -182,11 +213,13 @@ namespace Snake
             switch(state)
             {
                 case GameState.MainMenu:
+                    mainMenuStateEnd();
                     break;
                 case GameState.Play:
                     playStateEnd();
                     break;
                 case GameState.EndGame:
+                    endGameStateEnd();
                     break;
                     
             }
