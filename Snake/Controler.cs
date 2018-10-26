@@ -10,12 +10,23 @@ namespace Snake
         Random rand = new Random();
         private IView View { get; set; }
         private Model Mod { get; set; }
-        int pos = 0;
-        int lastPos = 0;
 
         Controler()
         {
-            spawnApple();
+            View.update();
+        }
+        public Controler(IView nView, Model nModel)
+        {
+            this.View = nView;
+            this.Mod = nModel;
+
+            // Starting coroutine
+            myTimer.Tick += new EventHandler(TimerEventProcessor);
+
+            // Sets the timer interval to 0.5 seconds.
+            myTimer.Interval = 500;
+            myTimer.Start();
+
             View.update();
         }
 
@@ -23,34 +34,60 @@ namespace Snake
         {
             if (playing)
             {
-                string a;
                 editingDirection();
 
-                if (!isSnakeColliding())
+                if (isSnakeColliding())
                 {
-                    updateSnakePosition();
-                    checkEatingApple();
+                    gameEnded();
                 }
                 else
                 {
-                    View.setGameState(GameState.EndGame);
-                    playing = false;
+                    updateSnakeLength();
+                    updateSnakePosition();
+
+                    checkEatingApple();
                 }
             }
             else if(Mod.StartButtonClicked)
             {
                 playing = true;
                 Mod.defaultValues();
+                spawnApple();
             }
-
-            
 
             View.update();
         }
 
+        private void updateSnakeLength()
+        {
+            if (Mod.TheSnake.newSegments > 0)
+            {
+                Mod.TheSnake.Segments.Add(new Place(Mod.TheSnake.Segments[Mod.TheSnake.Segments.Count - 1].Coordinates));
+                Mod.TheSnake.newSegments--;
+            }
+        }
+
+        void gameEnded()
+        {
+            View.setGameState(GameState.EndGame);
+            playing = false;
+        }
+
         private void spawnApple()
         {
-            Mod.TheApple.place.Coordinates = randomAvaliablePosition();
+            Position nPos;
+            if (randomAvaliablePosition(out nPos))
+            {
+                if (Mod.TheApple == null) {
+                    Mod.TheApple = new Apple();
+                }
+                Mod.TheApple.place.Coordinates = nPos;
+            }
+            else
+            {
+                Mod.TheApple = null;
+                gameEnded();
+            }
         }
 
         private bool isSnakeColliding()
@@ -88,13 +125,19 @@ namespace Snake
             }
         }
         
-        private Position randomAvaliablePosition()
+        /// <summary>
+        /// Gives random avaliable position on map
+        /// </summary>
+        /// <param name="nPos"></param>
+        /// <returns>true if avaliable position was found</returns>
+        private bool randomAvaliablePosition(out Position nPos)
         {
+            nPos = new Position(0,0);
             // all avaliable places
             int size = Mod.PlayColumns * Mod.PlayRows - Mod.TheSnake.Segments.Count;
 
-            if(size <= 0) {
-                return Mod.TheApple.place.Coordinates;
+            if (size <= 0) {
+                return false;
             }
 
             int randPosNumber = rand.Next(0, size);
@@ -106,7 +149,7 @@ namespace Snake
             for(i=0; i < Mod.PlayColumns * Mod.PlayRows; i++)
             {
                 bool found = false;
-                foreach(Place p in Mod.TheSnake.Segments)
+                foreach (Place p in Mod.TheSnake.Segments)
                 {
                     int tmp = p.Coordinates.Y * Mod.PlayColumns + p.Coordinates.X;
                     // if position is not empty skip rest of loop body
@@ -123,22 +166,23 @@ namespace Snake
                 }
                 actualChosenPos++;
             }
-            Console.WriteLine("X:" + Mod.TheSnake.Segments[0].Coordinates.X + "Y:" + Mod.TheSnake.Segments[0].Coordinates.Y);
-            return new Position(i % Mod.PlayColumns, i / Mod.PlayColumns);
+            nPos.X = i % Mod.PlayColumns;
+            nPos.Y = i / Mod.PlayColumns;
+            return true;
         }
 
         private void checkEatingApple()
         {
             // if head is in apple position
-            if(Mod.TheSnake.Segments[0].Coordinates.Equals(Mod.TheApple.place.Coordinates))
+            if(Mod.TheApple != null && Mod.TheSnake.Segments[0].Coordinates.Equals(Mod.TheApple.place.Coordinates))
             {
                 // create new segment and add it to snake. Segment position is equal to last one
-                Mod.TheSnake.Segments.Add(new Place(Mod.TheSnake.Segments[Mod.TheSnake.Segments.Count-1].Coordinates));
+                Mod.TheSnake.addSegment();
                 Mod.applesEaten++;
+
                 // set new position of apple
                 spawnApple();
             }
-
         }
 
         private Position changePosDependingOnDir(Position pos, Direction dir)
@@ -169,28 +213,9 @@ namespace Snake
                 Mod.TheSnake.Segments[i].Coordinates = Mod.TheSnake.Segments[i - 1].Coordinates;
             }
             
-
             Mod.TheSnake.Segments[0].Coordinates = 
                 changePosDependingOnDir(Mod.TheSnake.Segments[0].Coordinates,
                 Mod.TheSnake.movementDirection);
-
-        }
-
-        public Controler(IView nView, Model nModel)
-        {
-            this.View = nView;
-            this.Mod = nModel;
-
-            // Starting coroutine
-            myTimer.Tick += new EventHandler(TimerEventProcessor);
-
-            // Sets the timer interval to 0.5 seconds.
-            myTimer.Interval = 500;
-            myTimer.Start();
-
-            spawnApple();
-
-            View.update();
         }
 
         public void startGame()

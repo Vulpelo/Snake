@@ -8,10 +8,11 @@ namespace Snake
 {
     public class PlayerSnake
     {
+        public int newSegments { get; set; } = 0;
         public List<Place> Segments { get; }
-
         public Direction movementDirection { get; set; } = Direction.Right;
         public Direction lastMovementDirection { get; set; }
+
         public PlayerSnake(int startLength)
         {
             lastMovementDirection = movementDirection;
@@ -25,6 +26,11 @@ namespace Snake
         public void updateLastMovementDirection()
         {
             lastMovementDirection = movementDirection;
+        }
+
+        public void addSegment()
+        {
+            newSegments++;
         }
 
         ~PlayerSnake()

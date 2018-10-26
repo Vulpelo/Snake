@@ -154,7 +154,8 @@ namespace Snake
         }
         void drawApple()
         {
-            gamamap[Mod.TheApple.place.Coordinates.Y, Mod.TheApple.place.Coordinates.X].BackColor = Color.DarkRed;
+            if(Mod.TheApple != null)
+                gamamap[Mod.TheApple.place.Coordinates.Y, Mod.TheApple.place.Coordinates.X].BackColor = Color.DarkRed;
         }
 
         void playStateEnd()
@@ -174,7 +175,7 @@ namespace Snake
             label = new Label();
             label.Font = new Font("Arial", 10, FontStyle.Regular);
             label.AutoSize = true;
-            label.Text = Mod.applesEaten + " apples eaten.";
+            label.Text = Mod.applesEaten + " apple/s eaten.";
             panel1.Controls.Add(label);
 
             createStartButton("Retry?");
