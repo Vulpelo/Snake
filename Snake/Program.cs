@@ -17,9 +17,9 @@ namespace Snake
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 
-            Model model = new global::Snake.Model();
+            Model model = new Model();
             Form1 view = new Form1(model);
-            Controler controler = new global::Snake.Controler(view, model);
+            Controler controler = new Controler(view, model);
 
             Application.Run(view);
         }

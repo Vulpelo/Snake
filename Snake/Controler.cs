@@ -3,7 +3,7 @@ using System.Windows.Forms;
 
 namespace Snake
 {
-    class Controler : IControler
+    class Controler
     {
         Timer myTimer = new Timer();
         bool playing = false;
@@ -11,7 +11,7 @@ namespace Snake
         private IView View { get; set; }
         private Model Mod { get; set; }
 
-        Controler()
+        private Controler()
         {
             View.update();
         }
@@ -30,12 +30,10 @@ namespace Snake
             View.update();
         }
 
-        void TimerEventProcessor(Object obj, EventArgs args)
+        private void TimerEventProcessor(Object obj, EventArgs args)
         {
             if (playing)
             {
-                editingDirection();
-
                 if (isSnakeColliding())
                 {
                     gameEnded();
@@ -67,7 +65,7 @@ namespace Snake
             }
         }
 
-        void gameEnded()
+        private void gameEnded()
         {
             View.setGameState(GameState.EndGame);
             playing = false;
@@ -90,11 +88,14 @@ namespace Snake
             }
         }
 
+        /// <summary>
+        /// true if snake will be colliding when position gonna be updated
+        /// </summary>
+        /// <returns></returns>
         private bool isSnakeColliding()
-            // true if snake will be colliding when position gonna be updated
         {
             Position head = Mod.TheSnake.Segments[0].Coordinates;
-            head = changePosDependingOnDir(head, Mod.TheSnake.movementDirection);
+            head = changePosDependingOnDir(head, Mod.TheSnake.MovementDirection);
 
             // if out of bounds
             if (head.X >= Mod.PlayColumns || head.Y >= Mod.PlayRows || head.X < 0 || head.Y < 0)
@@ -112,17 +113,6 @@ namespace Snake
                 }
             }
             return false;
-        }
-
-        private void editingDirection()
-        {
-            if ((Mod.TheSnake.movementDirection == Direction.Up && Mod.TheSnake.lastMovementDirection == Direction.Down)
-                || (Mod.TheSnake.movementDirection == Direction.Left && Mod.TheSnake.lastMovementDirection == Direction.Right)
-                || (Mod.TheSnake.lastMovementDirection == Direction.Up && Mod.TheSnake.movementDirection == Direction.Down)
-                || (Mod.TheSnake.lastMovementDirection == Direction.Left && Mod.TheSnake.movementDirection == Direction.Right))
-            {
-                Mod.TheSnake.movementDirection = Mod.TheSnake.lastMovementDirection;
-            }
         }
         
         /// <summary>
@@ -215,7 +205,7 @@ namespace Snake
             
             Mod.TheSnake.Segments[0].Coordinates = 
                 changePosDependingOnDir(Mod.TheSnake.Segments[0].Coordinates,
-                Mod.TheSnake.movementDirection);
+                Mod.TheSnake.MovementDirection);
         }
 
         public void startGame()

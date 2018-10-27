@@ -14,7 +14,6 @@ namespace Snake
         {
             place = new Place();
             place.Coordinates = new Position(0, 0);
-            place.Obstacle = false;
         }
     }
 }

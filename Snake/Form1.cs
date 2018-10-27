@@ -59,7 +59,21 @@ namespace Snake
             }
 
         }
-        
+        void IView.setGameState(GameState nState)
+        {
+            endState();
+            state = nState;
+            switch (state)
+            {
+                case GameState.Play:
+                    playStateBegin();
+                    break;
+                case GameState.EndGame:
+                    endGameStateBegin();
+                    break;
+            }
+        }
+
         void createStartButton(String text)
         {
             startButton = new Button();
@@ -195,20 +209,6 @@ namespace Snake
             setGameState(GameState.Play);
         }
 
-        public void setGameState(GameState nState)
-        {
-            endState();
-            state = nState;
-            switch (state)
-            {
-                case GameState.Play:
-                    playStateBegin();
-                    break;
-                case GameState.EndGame:
-                    endGameStateBegin();
-                    break;
-            }
-        }
         private void endState()
         {
             switch(state)

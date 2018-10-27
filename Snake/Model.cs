@@ -43,20 +43,18 @@ namespace Snake
             switch (key)
             {
                 case 'a':
-                    TheSnake.movementDirection = Direction.Left;
+                    TheSnake.MovementDirection = Direction.Left;
                     break;
                 case 'd':
-                    TheSnake.movementDirection = Direction.Right;
+                    TheSnake.MovementDirection = Direction.Right;
                     break;
                 case 'w':
-                    TheSnake.movementDirection = Direction.Up;
+                    TheSnake.MovementDirection = Direction.Up;
                     break;
                 case 's':
-                    TheSnake.movementDirection = Direction.Down;
+                    TheSnake.MovementDirection = Direction.Down;
                     break;
             }
         }
-
-        
     }
 }

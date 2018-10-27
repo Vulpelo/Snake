@@ -10,12 +10,32 @@ namespace Snake
     {
         public int newSegments { get; set; } = 0;
         public List<Place> Segments { get; }
-        public Direction movementDirection { get; set; } = Direction.Right;
-        public Direction lastMovementDirection { get; set; }
+
+        private Direction movementDirection = Direction.Right;
+        public Direction MovementDirection {
+            get {
+                return movementDirection;
+            }            
+            set {
+                if ( (value == Direction.Up && LastMovementDirection == Direction.Down)
+                        || (value == Direction.Left && LastMovementDirection == Direction.Right)
+                        || (LastMovementDirection == Direction.Up && value == Direction.Down)
+                        || (LastMovementDirection == Direction.Left && value == Direction.Right) )
+                {
+                    MovementDirection = LastMovementDirection;
+                }
+                else
+                {
+                    movementDirection = value;
+                }
+            }
+        } 
+
+        private Direction LastMovementDirection { get; set; }
 
         public PlayerSnake(int startLength)
         {
-            lastMovementDirection = movementDirection;
+            LastMovementDirection = movementDirection;
             Segments = new List<Place>();
             for(int i= startLength + 2; i > 2 ; i--)
             {
@@ -25,7 +45,7 @@ namespace Snake
 
         public void updateLastMovementDirection()
         {
-            lastMovementDirection = movementDirection;
+            LastMovementDirection = movementDirection;
         }
 
         public void addSegment()
