@@ -9,9 +9,9 @@ namespace Snake
     public class Model
     {
         public int applesEaten { get; set; }
-        public PlayerSnake TheSnake { get; set; }
-        public int PlayRows { get; set; } = 10;
-        public int PlayColumns { get; set; } = 10;
+        public PlayerSnake TheSnake { get; private set; }
+        public int PlayRows { get; } = 10;
+        public int PlayColumns { get; } = 10;
         public Place[,] gameMap;
         public Apple TheApple { get; set; }
         public bool StartButtonClicked { get; set; } = false;

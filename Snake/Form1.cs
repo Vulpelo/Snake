@@ -49,7 +49,7 @@ namespace Snake
 
         }
 
-        void IView.update()
+        public void update()
         {
             switch (state)
             {
@@ -59,7 +59,8 @@ namespace Snake
             }
 
         }
-        void IView.setGameState(GameState nState)
+
+        public void setGameState(GameState nState)
         {
             endState();
             state = nState;
