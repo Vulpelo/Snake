@@ -19,7 +19,7 @@ namespace Snake
 
             Model model = new Model();
             Form1 view = new Form1(model);
-            Controler controler = new Controler(view, model);
+            Controller controler = new Controller(view, model);
 
             Application.Run(view);
         }

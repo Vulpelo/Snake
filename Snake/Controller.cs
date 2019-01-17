@@ -3,7 +3,7 @@ using System.Windows.Forms;
 
 namespace Snake
 {
-    class Controler
+    class Controller
     {
         Timer myTimer = new Timer();
         bool playing = false;
@@ -11,11 +11,11 @@ namespace Snake
         private IView View { get; set; }
         private Model Mod { get; set; }
 
-        private Controler()
+        private Controller()
         {
             View.update();
         }
-        public Controler(IView nView, Model nModel)
+        public Controller(IView nView, Model nModel)
         {
             this.View = nView;
             this.Mod = nModel;
@@ -208,9 +208,5 @@ namespace Snake
                 Mod.TheSnake.MovementDirection);
         }
 
-        public void startGame()
-        {
-            throw new NotImplementedException();
-        }
     }
 }

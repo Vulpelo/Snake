@@ -23,7 +23,7 @@ namespace Snake
 
         public void defaultValues()
         {
-            TheSnake = new PlayerSnake(3);
+            TheSnake = new PlayerSnake(1);
             TheApple = new Apple();
             
             gameMap = new Place[PlayRows, PlayColumns];

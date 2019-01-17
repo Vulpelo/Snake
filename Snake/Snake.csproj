@@ -47,7 +47,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Apple.cs" />
-    <Compile Include="Controler.cs" />
+    <Compile Include="Controller.cs" />
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
     </Compile>
