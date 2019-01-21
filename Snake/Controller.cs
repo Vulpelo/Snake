@@ -3,7 +3,7 @@ using System.Windows.Forms;
 
 namespace Snake
 {
-    class Controller
+    public class Controller
     {
         Timer myTimer = new Timer();
         bool playing = false;
@@ -11,7 +11,7 @@ namespace Snake
         private IView View { get; set; }
         private Model Mod { get; set; }
 
-        private Controller()
+        public Controller()
         {
             View.update();
         }

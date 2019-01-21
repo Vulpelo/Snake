@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Snake
 {
-    interface IView
+    public interface IView
     {
         void update();
         void setGameState(GameState nState);
